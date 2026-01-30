@@ -19,7 +19,6 @@ typedef struct {
 
 void draw_ball(simulation_t *sim);
 void draw_rod(simulation_t *sim);
-unsigned int isqrt(unsigned int x);
 void pendulum_step(simulation_t *sim);
 
 #endif // __PENDULUM_H__

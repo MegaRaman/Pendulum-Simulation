@@ -54,24 +54,6 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     /* clear the window to the draw color. */
     SDL_RenderClear(app->renderer);
 
-	// static int8_t x_mov = 1;
-	// app->p.pos_x += x_mov;
-	// if (app->p.pos_x >= TRAJ_CENTER_X + l_ROD_LENGTH) {
-	// 	x_mov = -1;
-	// 	app->p.pos_x = TRAJ_CENTER_X + l_ROD_LENGTH;
-	// }
-	// else if (app->p.pos_x <= TRAJ_CENTER_X - l_ROD_LENGTH) {
-	// 	x_mov = 1;
-	// 	app->p.pos_x = TRAJ_CENTER_X - l_ROD_LENGTH;
-	// }
-	// if (x_mov == 1) {
-	// 	app->p.pos_y = TRAJ_CENTER_Y + isqrt(l_ROD_LENGTH * l_ROD_LENGTH -
-	// 			(app->p.pos_x - TRAJ_CENTER_X) * (app->p.pos_x - TRAJ_CENTER_X));
-	// }
-	// else {
-	// 	app->p.pos_y = TRAJ_CENTER_Y - isqrt(l_ROD_LENGTH * l_ROD_LENGTH -
-	// 			(app->p.pos_x - TRAJ_CENTER_X) * (app->p.pos_x - TRAJ_CENTER_X));
-	// }
 	pendulum_step(app);
 	draw_rod(app);
 	draw_ball(app);

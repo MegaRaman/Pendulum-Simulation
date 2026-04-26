@@ -1,6 +1,8 @@
 #include <SDL3/SDL.h>
 #include <math.h>
+#include <stdio.h>
 
+#include "util/random.h"
 #include "pendulum_conf.h"
 #include "pendulum.h"
 
@@ -21,9 +23,16 @@ void draw_rod(simulation_t *sim) {
 }
 
 void pendulum_step(simulation_t *sim) {
-	sim->p.acc_theta_ddot = -g_FREEFALL / l_ROD_LENGTH * sin(sim->p.dev_theta);
-	sim->p.vel_theta_dot += sim->p.acc_theta_ddot * SIM_PERIOD_S;
-	sim->p.dev_theta += sim->p.vel_theta_dot * SIM_PERIOD_S;
+	float acc_prev = sim->p.acc_theta_ddot;
+	float vel_prev = sim->p.vel_theta_dot;
+	float pert = (float)get_rand_range(-RANDOM_PERT_MAGN, RANDOM_PERT_MAGN);
+	pert *= RANDOM_PERT_SCALER;
+	printf("%f\n", pert);
+
+	sim->p.acc_theta_ddot = -g_FREEFALL / l_ROD_LENGTH * sin(sim->p.dev_theta)
+		- AIR_FRICTION * sim->p.vel_theta_dot + pert;
+	sim->p.vel_theta_dot += acc_prev * SIM_PERIOD_S;
+	sim->p.dev_theta += vel_prev * SIM_PERIOD_S;
 
 	sim->p.pos_x = TRAJ_CENTER_X + l_ROD_LEN_PIX * sin(sim->p.dev_theta);
 	sim->p.pos_y = TRAJ_CENTER_Y + l_ROD_LEN_PIX * cos(sim->p.dev_theta);

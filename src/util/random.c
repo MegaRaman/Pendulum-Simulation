@@ -6,4 +6,3 @@ int get_rand_range(int min, int max) {
 	return (rand() % range) - max;
 }
 
-

@@ -2,6 +2,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <math.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "pendulum.h"
 #include "pendulum_conf.h"
@@ -20,9 +22,17 @@ SDL_AppResult SDL_AppInit(void **appstate, __attribute__((unused)) int argc,
 	app->p.acc_theta_ddot = 0;
 	app->p.vel_theta_dot = 0;
 	app->p.dev_theta = START_ANGLE;
+	app->p.pend_x = CART_START_X + (CART_WIDTH / 2) + l_ROD_LEN_PIX * sin(app->p.dev_theta);
+	app->p.pend_y = CART_START_Y + l_ROD_LEN_PIX * cos(app->p.dev_theta);
 
-	app->p.pos_x = TRAJ_CENTER_X + l_ROD_LEN_PIX * sin(app->p.dev_theta);
-	app->p.pos_y = TRAJ_CENTER_Y + l_ROD_LEN_PIX * cos(app->p.dev_theta);
+	app->c.acc_cart = 0;
+	app->c.vel_cart = 0;
+	app->c.cart_x = CART_START_X;
+	app->c.cart_y = CART_START_Y;
+
+	app->pend_fallen = false;
+	
+	srand(time(NULL));
 
     if (!SDL_CreateWindowAndRenderer("pendulum", WINDOW_WIDTH, WINDOW_HEIGHT,
 								SDL_WINDOW_RESIZABLE, &app->window, &app->renderer)) {
@@ -54,9 +64,12 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     /* clear the window to the draw color. */
     SDL_RenderClear(app->renderer);
 
-	pendulum_step(app);
+	if (!app->pend_fallen)
+		pendulum_step(app);
+	move_cart(app);
 	draw_rod(app);
 	draw_ball(app);
+	// draw_cart(app);
 
 	SDL_Delay(SIM_PERIOD_MS);
 

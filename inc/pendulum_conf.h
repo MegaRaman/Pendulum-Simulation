@@ -13,18 +13,23 @@
 #define g_FREEFALL		(9.81)
 #define AIR_FRICTION	(0.2)
 
-#define TRAJ_CENTER_X	(WINDOW_WIDTH / 2)
-#define TRAJ_CENTER_Y	(WINDOW_HEIGHT / 2 - l_ROD_LEN_PIX)
-
 #define SIM_PERIOD_S	(0.01)
 #define SIM_PERIOD_MS	(SIM_PERIOD_S * 1000)
 
 #define START_ANGLE		(SDL_PI_F)
 
-/* max magnitude of zero-centered uniform pert */
+/* max int magnitude of zero-centered uniform pert */
 #define RANDOM_PERT_MAGN	(5)
 /* RANDOM_PERT_MAGN scaler, needed to support '%' operation, which is only
- * defined for int*/
+ * defined for int */
 #define RANDOM_PERT_SCALER	(0.0001)
+
+#define CART_WIDTH			(60)
+#define CART_LEN			(20)
+
+#define CART_START_X	(WINDOW_WIDTH / 2 - (CART_WIDTH / 2))
+#define CART_START_Y	(WINDOW_HEIGHT / 2)
+
+#define CART_MASS		(1)
 
 #endif // __PENDULUM_CONF_H__

@@ -1,8 +1,9 @@
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-#include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <time.h>
 
 #include "pendulum.h"
@@ -31,6 +32,8 @@ SDL_AppResult SDL_AppInit(void **appstate, __attribute__((unused)) int argc,
 	app->c.cart_y = CART_START_Y;
 
 	app->pend_fallen = false;
+
+	init_control(&app->control);
 	
 	srand(time(NULL));
 
@@ -64,12 +67,16 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     /* clear the window to the draw color. */
     SDL_RenderClear(app->renderer);
 
-	if (!app->pend_fallen)
-		pendulum_step(app);
+	if (app->pend_fallen)
+		return SDL_APP_CONTINUE;
+
+	pendulum_step(app);
 	move_cart(app);
 	draw_rod(app);
 	draw_ball(app);
-	// draw_cart(app);
+	draw_cart(app);
+	update_input(&app->control);
+	printf("control: %f\n", app->control.u);
 
 	SDL_Delay(SIM_PERIOD_MS);
 

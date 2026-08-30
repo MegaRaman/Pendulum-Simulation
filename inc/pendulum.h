@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <SDL3/SDL.h>
 
+#include "control.h"
+
 typedef struct {
 	double dev_theta;
 	double vel_theta_dot;
@@ -19,11 +21,13 @@ typedef struct {
 	float cart_x, cart_y;
 } cart_t;
 
+
 typedef struct {
 	SDL_Window *window;
 	SDL_Renderer *renderer;
 	pendulum_t p;
 	cart_t c;
+	control_t control;
 
 	bool pend_fallen;
 } simulation_t;
